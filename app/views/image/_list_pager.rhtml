@@ -1,0 +1,21 @@
+<div style="line-height:140%; margin:10 0 10 0">
+  <% if @pages.item_count > 0 %>
+    <b><%= @pages.current.first_item %> ~ <%= @pages.current.last_item %></b>
+    of
+  <% end %>
+  <%= @pages.item_count %> images
+  <br />
+  <% if @pages.current.previous %>
+    <%= link_to "&laquo; Prev",
+                {:page => @pages.current.previous},
+                {:style=>"font-size:13pt;font-weight:bold"} %>
+    |
+  <% end %>
+  <%= pagination_links @pages %>
+  <% if @pages.current.next %>
+    |
+    <%= link_to "Next &raquo;",
+                {:page => @pages.current.next},
+                {:style=>"font-size:13pt;font-weight:bold"} %>
+  <% end %>
+<div>
