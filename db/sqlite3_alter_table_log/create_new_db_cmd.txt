@@ -1,0 +1,1 @@
+cat schema.txt | sqlite3 new.db3

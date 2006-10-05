@@ -1,0 +1,55 @@
+BEGIN TRANSACTION;
+
+CREATE TEMPORARY TABLE backup(
+  id         TEXT PRIMARY KEY,
+  user_name  TEXT NOT NULL,
+  title      TEXT,
+  comment    TEXT,
+  lastupdate TIMESTAMP,
+  source     TEXT);
+INSERT INTO backup
+  SELECT id, user_name, title, comment, lastupdate, source
+  FROM images;
+DROP TABLE images;
+
+CREATE TABLE images(
+  id         TEXT PRIMARY KEY,
+  user_name  TEXT NOT NULL,
+  title      TEXT,
+  comment    TEXT,
+  lastupdate TIMESTAMP,
+  source     TEXT);
+INSERT INTO images
+  SELECT id, user_name, title, comment, lastupdate, source
+  FROM backup;
+DROP TABLE backup;
+
+COMMIT;
+
+
+
+BEGIN TRANSACTION;
+
+CREATE TABLE backup(
+  id        INTEGER PRIMARY KEY,
+  name      TEXT NOT NULL,
+  image_id  TEXT NOT NULL,
+  user_name TEXT NOT NULL
+);
+INSERT INTO backup
+  SELECT id, name, image_id, user_name
+  FROM tags;
+DROP TABLE tags;
+
+CREATE TABLE tags(
+  id        INTEGER PRIMARY KEY,
+  name      TEXT NOT NULL,
+  image_id  TEXT NOT NULL,
+  user_name TEXT NOT NULL
+);
+INSERT INTO tags
+  SELECT id, name, image_id, user_name
+  FROM backup;
+DROP TABLE backup;
+
+COMMIT;

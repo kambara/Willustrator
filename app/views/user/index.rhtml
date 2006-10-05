@@ -1,0 +1,14 @@
+<% @page_title = "Willustrator" %>
+<div class="body">
+
+<h1>All Users</h1>
+
+<%
+@users.each do |user|
+  %>
+  <%= link_to user.user_name, "/#{user.user_name}/" %> ,
+  <%
+end
+%>
+
+</div>

@@ -1,0 +1,12 @@
+<% @page_title = "Willustrator" %>
+<div class="body">
+
+<h1>New Images</h1>
+
+<div class="image-list">
+  <%= render_collection_of_partials "image_list", @images %>
+</div>
+
+<%= render_partial 'pager', @pages %>
+
+</div>

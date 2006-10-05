@@ -1,0 +1,15 @@
+CREATE TABLE images(
+  id         INTEGER PRIMARY KEY NOT NULL,
+  md5id      TEXT    NOT NULL UNIQUE,
+  user_name  TEXT    NOT NULL,
+  title      TEXT,
+  comment    TEXT,
+  lastupdate TIMESTAMP,
+  source     INTEGER
+);
+CREATE TABLE tags(
+  id        INTEGER PRIMARY KEY,
+  name      TEXT    NOT NULL,
+  image_id  INTEGER NOT NULL,
+  user_name TEXT    NOT NULL
+);

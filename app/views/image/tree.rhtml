@@ -1,0 +1,42 @@
+<% @page_title = "#{@image.title} - Willustrator" %>
+
+<div class="body">
+
+<img src="<%= @image.src_small %>" style="border:1px solid #666666;" />
+
+<table align="center" class="tree"><tr>
+<% @image.derivatives.each do |img1| %>
+  <td align="center" valign="top">
+  <%= render :partial=>'branch', :locals => {:image => img1} %>
+
+  <table align="center" class="tree"><tr>
+  <% img1.derivatives.each do |img2| %>
+    <td align="center" valign="top">
+    <%= render :partial=>'branch', :locals => {:image => img2} %>
+
+    <table align="center" class="tree"><tr>
+    <% img2.derivatives.each do |img3| %>
+      <td align="center" valign="top">
+      <%= render :partial=>'branch', :locals => {:image => img3} %>
+
+      <table align="center" class="tree"><tr>
+      <% img3.derivatives.each do |img4| %>
+        <td align="center" valign="top">
+        <%= render :partial=>'branch', :locals => {:image => img4} %>
+        </td>
+      <% end %>
+      </tr></table>
+
+      </td>
+    <% end %>
+    </tr></table>
+  
+    </td>
+  <% end %>
+  </tr></table>
+  
+  </td>
+<% end %>
+</tr></table>
+
+</div><!-- body -->

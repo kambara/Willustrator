@@ -1,0 +1,41 @@
+BEGIN TRANSACTION;
+
+CREATE TEMPORARY TABLE backup(
+  id         INTEGER PRIMARY KEY NOT NULL,
+  user_name  TEXT    NOT NULL,
+  title      TEXT,
+  comment    TEXT,
+  lastupdate TIMESTAMP,
+  source     INTEGER
+);
+INSERT INTO backup
+  SELECT id,
+         user_name,
+	 title,
+	 comment,
+	 lastupdate,
+	 source
+  FROM images;
+DROP TABLE images;
+
+CREATE TABLE images(
+  id         INTEGER PRIMARY KEY NOT NULL,
+  md5id      TEXT    NOT NULL UNIQUE,
+  user_name  TEXT    NOT NULL,
+  title      TEXT,
+  comment    TEXT,
+  lastupdate TIMESTAMP,
+  source     INTEGER
+);
+INSERT INTO images
+  SELECT id,
+         id,
+	 user_name,
+         title,
+         comment,
+         lastupdate,
+	 source
+  FROM backup;
+DROP TABLE backup;
+
+COMMIT;

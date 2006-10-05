@@ -1,0 +1,15 @@
+<% @page_title = "Willustrator" %>
+<div class="body">
+
+<h1>All Tags</h1>
+<div style="line-height:180%;">
+<%
+@tags.each do |tag|
+  %>
+  <%= link_to tag.name, "/tag/#{CGI.escape(tag.name)}", "class"=>"tag" %>
+  <%
+end
+%>
+</div>
+
+</div>

@@ -1,0 +1,29 @@
+<%
+image = image_list
+png = "/data/#{image.md5id}_small.png"
+if (not File.exist?("public"+png))
+  png = "/images/no_image.png"
+end
+%>
+
+<div class="image-list-item">
+  <a href="/image/<%= image.md5id %>">
+    <img class="sample" src="<%= png %>" />
+  </a>
+  <div>
+    <a class="image-list-title" href="/image/<%= image.md5id %>">
+      <%= image.title %>
+    </a>
+    <%
+    if image.has_attribute? "user_name"
+      %>
+      <!--
+      <br />
+      by
+      <%= link_to image.user_name, "/#{image.user_name}/" %>
+      -->
+      <%
+    end
+    %>
+  </div>
+</div>

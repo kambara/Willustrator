@@ -1,0 +1,313 @@
+<% @page_title = "#{@image.title} - Willustrator" %>
+<script type="text/javascript"><!--
+
+var DirectTextEdit = Class.create();
+DirectTextEdit.prototype = {
+    initialize: function(elemId, editContainerId) {
+        this.textSpan = $(elemId);
+	this.editContainer = $(editContainerId);
+	this.noTitleMessage = 'no title';
+
+	if (this.textSpan.innerHTML == '') {
+	    this.setTitle('');
+        }
+	Event.observe(this.textSpan, 'mouseover', (function() {
+	    this.textSpan.style.backgroundColor = 'lemonchiffon';
+	}).bindAsEventListener(this), false);
+	Event.observe(this.textSpan, 'mouseout', (function() {
+	    this.textSpan.style.backgroundColor = '';
+	}).bindAsEventListener(this), false);
+        Event.observe(this.textSpan, 'click',
+	              this.onClick.bindAsEventListener(this),
+		      false);
+    },
+    onClick: function() {
+        var textInput = document.createElement('input');
+	textInput.type = 'text';
+	if (this.textSpan.innerHTML!=this.noTitleMessage) {
+	    textInput.value = this.textSpan.innerHTML;
+        }
+	
+	var okButton = document.createElement('input');
+	okButton.type = 'button';
+	okButton.value = 'OK';
+	Element.setStyle(okButton, {
+	    fontSize: '10pt'
+	});
+	Event.observe(okButton, 'click', (function() {
+	    this.onOK(textInput.value);
+	}).bindAsEventListener(this), false);
+
+	var cancelButton = document.createElement('input');
+	cancelButton.type = 'button';
+	cancelButton.value = 'cancel';
+	Element.setStyle(cancelButton, {
+	    fontSize: '10pt'
+	});
+	Event.observe(cancelButton, 'click',
+	              this.onCancel.bindAsEventListener(this),
+		      false);
+
+	Element.hide(this.textSpan);
+	this.editContainer.appendChild(textInput);
+	this.editContainer.appendChild(document.createElement('br'));
+	this.editContainer.appendChild(okButton);
+	this.editContainer.appendChild(cancelButton);
+    },
+    onOK: function(text) {
+        var url = '/image/set_image_title/<%= @image.md5id %>';
+        var params = $H({
+            value: text
+	}).toQueryString();
+        new Ajax.Request(url, {
+            methos: 'post',
+            parameters: params,
+            onSuccess: this.onEditSuccess.bind(this)
+        });
+    },
+    onCancel: function() {
+        this.editContainer.innerHTML = '';
+        Element.show(this.textSpan);
+    },
+    onEditSuccess: function(req) {
+        this.editContainer.innerHTML = '';
+	var title = req.responseText;
+        //this.textSpan.innerHTML = (title=="") ? this.noTitleMessage : title;
+	this.setTitle(title);
+        Element.show(this.textSpan);
+    },
+    setTitle: function(text) {
+        if (text == '') {
+	    this.textSpan.innerHTML = this.noTitleMessage;
+	    this.textSpan.style.color = '#CCCCCC';
+        } else {
+	    this.textSpan.innerHTML = text;
+	    this.textSpan.style.color = '';
+        }
+    }
+}
+
+Event.observe(window, 'load', function() {
+    if ($('image-title') && $('image-title-edit-container')) {
+        new DirectTextEdit('image-title', 'image-title-edit-container');
+    }
+}, false);
+
+//-->
+</script>
+<div class="body">
+
+<div class="image-title-container">
+  <% if @is_owner %>
+    <div id="image-title" class="image-title" style="cursor:pointer; width:70%;"><%= @image.title %></div>
+    <span id="image-title-edit-container"></span>
+  <% else %>
+    <div class="image-title"><%= @image.title %></div>
+  <% end %>
+
+  <div style="font-size:12pt; margin-top: 5px;">
+    by <a href="/<%= @image.user_name %>/"><%= @image.user_name %></a>
+  </div>
+</div>
+
+<table cellspacing="0" cellpadding="0" style="background-color: #DDDDDD; margin:0 auto 0 auto">
+  <tr>
+    <td><img src="/images/01-curve-left-head.gif"></td>
+    <td></td>
+    <td><img src="/images/01-curve-right-head.gif"></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td align="center">
+      <%
+      png = "/data/#{@image.md5id}.png"
+      if (File.exist?("public"+png))
+        %>
+        <img src="<%= png %>?<%= Time.now.to_i.to_s %>" style="border:1px solid #666666; margin:10" />
+        <%
+      else
+        %>
+        <img src="/images/no_image.png" style="border:1px solid #666666; background-color:white;margin:10" />
+        <%
+      end
+      %>
+    </td>
+    <td></td>
+  </tr>
+    <td></td>
+    <td align="center" nowrap>
+      <%
+      if @is_owner
+        %>
+        <span class="image-command">
+	  <a href="/image/edit/<%= @image.md5id %>">
+            <img src="/images/pencil.png" />
+	    Edit
+	  </a>
+        </span>
+        <span class="image-command">
+	  <a href="/image/destroy/<%= @image.md5id %>" onclick="return confirm('Are you sure to delete this image ?');">
+            <img src="/images/cross.png" />
+	    Delete
+	  </a>
+        </span>
+        <%
+      end
+      %>
+      <%
+      if @session[:user_name]
+        %>
+        <a href="/image/copy/<%= @image.md5id %>">
+          <img src="/images/page_copy.png" />
+          Copy
+        </a>
+        <%
+      end
+      %>
+    </td>
+    <td></td>
+  <tr>
+    <td><img src="/images/01-curve-left-bottom.gif"></td>
+    <td></td>
+    <td><img src="/images/01-curve-right-bottom.gif"></td>
+  </tr>
+</table>
+
+<table align="center" style="margin-top:10px;">
+<tr>
+<td align="center">
+  <%
+  if @sources.length > 0
+    source = @sources.last
+    png = "/data/#{source.md5id}_small.png"
+    if (not File.exist?("public"+png))
+      png = "/images/no_image.png"
+    end
+    %>
+    <img src="/images/arrow_up.png" />
+    <br />
+    <a href="/image/<%= source.md5id %>">
+      <img src="<%= png %>" style="border:1px solid #666666;">
+    </a>
+  <% end %>
+</td>
+<%
+if (@derivatives and @derivatives.length>0)
+  %>
+  <%
+  @derivatives.each do |derivative|
+    png = "/data/#{derivative.md5id}_small.png"
+    if (not File.exist?("public"+png))
+      png = "/images/no_image.png"
+    end
+    %>
+    <td align="center" style="padding-left:10px;">
+      <img src="/images/arrow_down.png" />
+      <br />
+      <a href="/image/<%= derivative.md5id %>">
+        <img class="sample" src="<%= png %>" />
+      </a>
+    </td>
+    <%
+    end
+  %>
+  <%
+end
+%>
+</tr>
+</table>
+
+
+<table style="margin:40 auto 40 auto;">
+<tr>
+<td style="line-height:180%;">
+
+<%
+@tags.each do |tag|
+  %>
+  <a href="/<%= @image.user_name %>/<%= CGI.escape(tag.name) %>" class="tag">
+    <%= tag.name %>
+  </a>
+  <a href="/tag/destroy/<%= tag.id %>" class="tag-delete" onclick="return confirm('Are you sure to delete a tag \'<%= tag.name %>\' ?');">
+    <img src="/images/cross.png" />
+  </a>
+  <br />
+  <%
+end
+%>
+
+<form action="/tag/add" method="post" style="margin:4 0 0 0;">
+  <%= hidden_field "tag", "image_id", "value" => @image.id %>
+  <%= hidden_field "tag", "user_name", "value" => @image.user_name %>
+  <%= text_field "tag", "name", "size" => 12, "class" => "tag", "style" => "background-color:lemonchiffon;" %>
+  <input type="submit" value="Add Tag" />
+</form>
+
+</td>
+</tr>
+</table>
+
+
+<table align="center">
+<tr>
+  <td>
+  <textarea cols="50" rows="5" style="font-size:90%; color:#666666" onclick="this.select()" readonly><%=h "<a href=\"http://#{@request.env['HTTP_HOST']}/image/#{@image.md5id}\" target=\"_blank\"><img src=\"http://#{@request.env['HTTP_HOST']}/data/#{@image.md5id}.png\" alt=\"#{@image.title}\"></a>" %></textarea>
+  </td>
+</tr>
+<tr>
+  <td>
+  <%= link_to "SVG", "/data/#{@image.md5id}.svg" %> <input type="text" value="http://<%= @request.env['HTTP_HOST'] %>/data/<%= @image.md5id %>.svg" size="40" style="color:#666666" onclick="this.select()" readonly />
+  </td>
+</tr>
+<tr>
+  <td>
+  <%= link_to "PNG", "/data/#{@image.md5id}.png" %> <input type="text" value="http://<%= @request.env['HTTP_HOST'] %>/data/<%= @image.md5id %>.png" size="40" style="color:#666666" onclick="this.select()" readonly /> 
+  </td>
+</tr>
+</table>
+
+<div style="margin-top:30px; background-color:#EEE; border-top:1px solid #999; padding:10 0 20 0;">
+
+<!--Creative Commons License--><a rel="license" href="http://creativecommons.org/licenses/by-sa/2.1/jp/"><img alt="Creative Commons License" border="0" src="http://creativecommons.org/images/public/somerights20.png"/></a><!--/Creative Commons License--><!-- <rdf:RDF xmlns="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<Work rdf:about="">
+		<license rdf:resource="http://creativecommons.org/licenses/by-sa/2.1/jp/" />
+	<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+	</Work>
+	<License rdf:about="http://creativecommons.org/licenses/by-sa/2.1/jp/"><permits rdf:resource="http://web.resource.org/cc/Reproduction"/><permits rdf:resource="http://web.resource.org/cc/Distribution"/><requires rdf:resource="http://web.resource.org/cc/Notice"/><requires rdf:resource="http://web.resource.org/cc/Attribution"/><permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/><requires rdf:resource="http://web.resource.org/cc/ShareAlike"/></License></rdf:RDF> -->
+
+<div style="margin-top:10px; font-size:90%; line-height:140%;">
+This image ("<%= @image.title || 'no title' %>") is licensed under a Creative Commons License (cc-by-sa).<br />
+<%
+if @history_names.length > 1
+  @history_names.each_index do |index|
+    if index == 0
+      %>
+      Originally created by <b><%= @history_names[index] %></b>,
+      and re-edited by
+      <%
+    else
+      %>
+      <b><%= @history_names[index] %></b><% if index == @history_names.length-1 %>.<% else %>,<% end %>
+      <%
+    end
+  end
+else
+  %>
+  Created by <b><%= @image.user_name %></b>.
+  <%
+end
+%>
+</div>
+
+</div>
+
+</div><!-- body -->
+
+<script type="text/javascript"><!--
+    hatena_counter_name = "kambara";
+    hatena_counter_id = "11";
+    hatena_counter_ref = document.referrer+"";
+    hatena_counter_screen = screen.width + "x" + screen.height+","+screen.colorDepth;
+//--></script>
+<script type="text/javascript" src="http://counter.hatena.ne.jp/js/counter.js"></script>
+<noscript><img src="http://counter.hatena.ne.jp/kambara/11" border="0" alt="counter"></noscript>

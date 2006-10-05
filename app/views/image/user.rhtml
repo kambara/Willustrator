@@ -1,0 +1,46 @@
+<% @page_title = "#{@user_name} - Willustrator" %>
+<div class="body">
+
+<div class="tags">
+  <a href="/<%= @user_name %>/"><%= @user_name %></a>'s Tags<br />
+  <%
+  @tags.each do |tag|
+    %>
+    <%= link_to tag.name, "/#{@user_name}/#{CGI.escape(tag.name)}", "class"=>"tag" %>
+    (<%= tag.count %>)
+    <br />
+    <%
+  end
+  %>
+</div>
+
+<h1>
+  <%
+  if @params[:tag]
+    %>
+    <a href="/<%= @user_name %>/"><%= @user_name %></a>'s
+    <span class="tag"><%= @params[:tag] %></span>
+    <%
+  else
+    %>
+    <%= @user_name %>'s Images
+    <%
+  end
+  %>
+</h1>
+
+<% if @is_owner %>
+  <div style="text-align: center">
+  <%= form_tag :action => "new_item" %>
+    <input type="submit" value="Create New Image" />
+  <%= end_form_tag %>
+  </div>
+<% end %>
+ 
+<div class="image-list">
+  <%= render_collection_of_partials "image_list", @images %>
+</div>
+
+<%= render_partial 'pager', @pages %>
+
+</div>

@@ -1,0 +1,13 @@
+<% @page_title = "Willustrator" %>
+<div class="body">
+
+<h1>
+  <%= link_to "All Tags", :controller => "tag" %>
+  &raquo; <span class="tag"><%= @tag_name %></span>
+</h1>
+
+<div class="image-list">
+  <%= render_collection_of_partials "image_list", @images %>
+</div>
+
+</div>

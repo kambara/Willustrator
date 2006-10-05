@@ -1,0 +1,52 @@
+<% @page_title = "Willustrator: Drawing tool on the Web" %>
+<div class="body" >
+  
+  <p style="font-weight:bold; font-size:150%; color:#666666;">
+    Drawing tool on the Web
+  <p>
+  
+  <div style="font-size:130%; margin:20 auto 10 auto; width:250px; background-color:#EEEEEE; border:1px solid #999999; padding:10; line-height:120%;">
+  <% if @session[:user_name] %>
+    <a href="/<%= @session[:user_name] %>/"><%= @session[:user_name] %>'s Images</a>
+  <% else %>
+    <a href="/login">Login</a><bt />
+    <span style="color:#666666; font-size:10pt">with Hatena Account</span>
+    <br />
+    or
+    <br />
+    <a href="https://www.hatena.ne.jp/register" target="_blank">Create a Hatena Account</a>
+  <% end %>
+  </div>
+
+  <p>
+    <%= link_to "All Tags", :controller => "tag" %> |
+    <%= link_to "New Images", :controller => "image", :action => "list" %>
+  </p>
+
+  <h2>Docs</h2>
+  <p>
+    <a href="http://willustrator.g.hatena.ne.jp/keyword/Willustrator%e3%81%ae%e3%83%98%e3%83%ab%e3%83%97" target="_blank">Help</a> | 
+    <a href="http://willustrator.g.hatena.ne.jp/kambara/?word=%2a%5bupdate%5d" target="_blank">Update history</a>
+  </p>
+
+  <div style="margin:30 auto 0 auto; border-top:1px dotted #999999; padding:10px; text-align:center; width:50%;">
+    &copy; 2006 <span style="font-weight:bold">Keisuke Kambara</span>
+    <div style="font-size:10pt;">
+      <a href="http://sappari.org/">http://sappari.org/</a>
+      ( <a href="http://d.hatena.ne.jp/kambara/">Diary</a> )
+    </div>
+    <div style="font-size:10pt; margin-top:10px;">
+      Icons by <a href="http://www.famfamfam.com/lab/icons/">famfamfam</a>
+    </div>
+  </div>
+  
+</div>
+
+<script type="text/javascript"><!--
+    hatena_counter_name = "kambara";
+    hatena_counter_id = "11";
+    hatena_counter_ref = document.referrer+"";
+    hatena_counter_screen = screen.width + "x" + screen.height+","+screen.colorDepth;
+//--></script>
+<script type="text/javascript" src="http://counter.hatena.ne.jp/js/counter.js"></script>
+<noscript><img src="http://counter.hatena.ne.jp/kambara/11" border="0" alt="counter"></noscript>
