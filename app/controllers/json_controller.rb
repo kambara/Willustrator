@@ -42,7 +42,7 @@ class JsonController < ApplicationController
 
   def new_image
     if (!@session[:user_name])
-      render :text => 'error'
+      render :text => {:error => 'need to login'}.to_json
       return
     end
     site_url = "http://#{@request.env['HTTP_HOST']}"
@@ -55,6 +55,7 @@ class JsonController < ApplicationController
       :small => "#{site_url}/data/#{image.md5id.to_s}_small.png",
       :svg   => "#{site_url}/data/#{image.md5id.to_s}.svg",
     }.to_json
+
     if (@params['jsonp'])
       render :text => "#{@params['jsonp']}(#{json});"
     else
