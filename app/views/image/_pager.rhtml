@@ -5,17 +5,31 @@
   <% end %>
   <%= @pages.item_count %> images
   <br />
-  <% if @pages.current.previous %>
-    <%= link_to "&laquo; Prev",
-                {:page => @pages.current.previous},
-                {:style=>"font-size:13pt;font-weight:bold"} %>
+  <% if @previous_page_url %>
+    <a href="<%= @previous_page_url %>" style="font-size:13pt;font-weight:bold">&laquo; Prev</a>
     |
   <% end %>
-  <%= pagination_links @pages %>
-  <% if @pages.current.next %>
+  
+  <%
+  @pages.each do |page|
+    %>
+    <%
+    if @pages.current == page
+      %>
+      <span style="background-color:#CCC;font-weight:bold;padding:3 5 3 5;"><%= page.number %></span>
+      <%
+    else
+      %>
+      <a href="<%= @page_url %>?page=<%= page.number %>" style="padding:3 5 3 5;"><%= page.number %></a>
+      <%
+    end
+    %>
+    <%
+  end
+  %>
+
+  <% if @next_page_url %>
     |
-    <%= link_to "Next &raquo;",
-                {:page => @pages.current.next},
-                {:style=>"font-size:13pt;font-weight:bold"} %>
+    <a href="<%= @next_page_url %>" style="font-size:13pt;font-weight:bold">Next &raquo;</a>
   <% end %>
 <div>

@@ -68,6 +68,15 @@ class ImageController < ApplicationController
                                 :conditions => ["user_name = ?", @user_name],
                                 :order_by => 'lastupdate DESC')
     end
+    
+    t = @params[:tag] ? CGI.escape(@params[:tag]) : ''
+    @page_url = "/#{@user_name}/#{t}"
+    if @pages.current.previous
+      @previous_page_url = "#{@page_url}?page=#{@pages.current.previous.number}"
+    end
+    if @pages.current.next
+      @next_page_url = "#{@page_url}?page=#{@pages.current.next.number}"
+    end
   end
 
   def tag
