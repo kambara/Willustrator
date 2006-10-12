@@ -5,14 +5,16 @@
   <%= link_to("&laquo; " + image_title, "/image/#{@image.md5id}") %>
 </div>
 
-<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="100%" height="90%" id="svg" align="middle">
+<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="100%" height="90%" id="editor-object" align="middle">
 <param name="allowScriptAccess" value="sameDomain" />
 <param name="movie" value="/draw.swf" />
 <param name="quality" value="high" />
 <param name="scale" value="noscale" />
 <param name="bgcolor" value="#ffffff" />
 <param name="FlashVars" value="<%= @flash_vars %>" />
-<embed src="/draw.swf" 
+<embed
+id="editor-embed"
+src="/draw.swf" 
 FlashVars="<%= @flash_vars %>" 
 quality="high" scale="noscale" 
 bgcolor="#ffffff" 
@@ -21,3 +23,26 @@ name="draw" align="middle" allowScriptAccess="sameDomain"
 type="application/x-shockwave-flash" 
 pluginspage="http://www.macromedia.com/go/getflashplayer" />
 </object>
+
+<script><!--
+function adjust() {
+    var windowInnerHeight = window.innerHeight || document.body.clientHeight;
+
+    var editorEmbed = document.getElementById('editor-embed');
+    if (editorEmbed) {
+        var height = windowInnerHeight - editorEmbed.offsetTop;
+	editorEmbed.height = height;
+	editorEmbed.style.height = height;
+    }
+
+    var editorObject = document.getElementById('editor-object');
+    if (editorObject) {
+        var height = windowInnerHeight - editorObject.offsetTop;
+        editorObject.height = height;
+        editorObject.style.height = height;
+    }
+}
+window.onresize = adjust;
+window.onload = adjust;
+//-->
+</script>
