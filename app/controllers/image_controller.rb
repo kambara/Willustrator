@@ -115,8 +115,53 @@ class ImageController < ApplicationController
       redirect_to "/image/#{@params[:md5id]}"
       return
     end
-    @flash_vars = "source_url=/data/#{@image.md5id}.xml&" +
-                  "save_url=/image/save/#{@image.md5id}"
+    @flash_vars = [
+      "source_url=/data/#{@image.md5id}.xml",
+      "save_url=/image/save/#{@image.md5id}",
+      "publish_url=/image/save2/#{@image.md5id}"
+    ].join('&');
+  end
+
+  def save2
+    image = Image.find_by_md5id(@params[:md5id])
+    if image == nil
+      image = Image.new(
+                        :md5id     => @params[:md5id],
+                        :user_name => @session[:user_name],
+                        :title     => 'no title'
+                        )
+    elsif (image.user_name != @session[:user_name])
+      render_text "You are not owner of this image."
+      return
+    end
+
+    ## export XML
+    begin
+      image.export_xml(@params[:xml])
+    rescue
+      render_text "Fail to save a source data."
+      return
+    end
+
+    ## export PNG
+    begin
+      image.export_png(
+                       @params[:width].to_i,
+                       @params[:height].to_i,
+                       @params[:data]
+                       )
+    rescue
+      render_text "Fail to save a png image."
+      return
+    end
+
+    ## update & save
+    image[:lastupdate] = Time.now
+    if image.save
+      render_text "ok"
+    else
+      render_text "fail"
+    end
   end
 
   def save

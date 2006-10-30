@@ -53,4 +53,15 @@ class Image < ActiveRecord::Base
     return Image.new(:md5id => new_md5id,
                      :title => 'no title')
   end
+
+  def export_xml(str)
+    open("public/data/#{self.md5id}.xml", "w") do |f|
+      f.write(str)
+    end
+  end
+
+  def export_png(w, h, data)
+    png_path = "public/data/#{self.md5id}.png"
+    ImageExporter::export(png_path, w, h, data)
+  end
 end
