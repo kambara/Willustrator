@@ -5,6 +5,7 @@ $willustrator_config = {
   :hatena_api_secret => 'e159f70bbadda3fc',
   :offline => false
 }
+config.log_level = :warn
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
