@@ -18,8 +18,10 @@ font-family: Helvetica, Arial, Gothic, sans-serif;
 
 h1
 {
-margin-top: 60;
+margin-top: 40;
 margin-bottom: 40;
+font-family: Century Gothic;
+font-weight: bold;
 font-size: 18pt;
 color: #666666;
 }
@@ -94,7 +96,7 @@ font-size: 1pt;
 
 div.image-title-container
 {
-margin: 60 0 30 0;
+margin: 40 0 30 0;
 }
 
 div.image-title
@@ -102,6 +104,8 @@ div.image-title
 line-height: 100%;
 margin: 0 auto 0 auto;
 padding: 3px;
+font-family: Century Gothic;
+font-weight: bold;
 font-size: 18pt;
 color: #666666;
 }
