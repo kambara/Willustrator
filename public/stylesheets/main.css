@@ -74,10 +74,10 @@ div.login-menu
 { 
   position: absolute;
   right: 10;
-  top: 5;
+  top: 8;
   font-size: 10pt;
   color: white;
-  }
+}
 div.login-menu a
 { 
 color: white;
@@ -85,9 +85,9 @@ color: white;
 
 div.title-banner
 { 
-height: 30;
+height: 34;
 margin: 0;
-background-color: #4b474d/*#009cd1*//*#b4ce5c*//*#007bc3*//*#272c6e*//*#89acd7*//*#89bdde*//*#0073a2*/;
+background: #333 url("/images/title_bg.png") repeat-x;
 padding: 0;
 font-size: 1pt;
 }
