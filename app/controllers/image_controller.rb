@@ -105,7 +105,8 @@ class ImageController < ApplicationController
     end
     
     @flash_vars = "source_url=/new.xml&" +
-                 "save_url=/image/save/#{@image.md5id}"
+                 "save_url=/image/save/#{@image.md5id}&" +
+                 "publish_url=/image/save2/#{@image.md5id}"
     render :action => 'edit'
   end
 
@@ -143,7 +144,7 @@ class ImageController < ApplicationController
       return
     end
 
-    ## export PNG
+    ## export PNG and thumbnail
     begin
       image.export_png(
                        @params[:width].to_i,

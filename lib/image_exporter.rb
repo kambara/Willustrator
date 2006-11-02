@@ -5,8 +5,8 @@ require_gem 'gd2'
 class ImageExporter
   class ImageExporterException < StandardError
   end
-
-  def self.export(filepath, width, height, data)
+  
+  def initialize(width, height, data)
     raw = uncompress(data)
 
     ## verify
@@ -15,19 +15,37 @@ class ImageExporter
       return
     end
 
-    image = GD2::Image::TrueColor.new(width, height)
+    @image = GD2::Image::TrueColor.new(width, height)
     height.times do |y|
       width.times do |x|
         i = y * width + x
         color = raw[i]
-        image.set_pixel(x, y, color.to_i)
+        @image.set_pixel(x, y, color.to_i)
       end
     end
-
-    image.export filepath
   end
 
-  def self.uncompress(data)
+  def export(filepath)
+    @image.export(filepath)
+  end
+
+  def thumbnail(filepath, max_w, max_h)
+    w = @image.width
+    h = @image.height
+    if (w > max_w or h > max_h)
+      if (w > h)
+        h = h * max_w/w
+        w = max_w
+      else
+        w = w * max_h/h
+        h = max_h
+      end
+    end
+    @image.resize(w, h).export(filepath)
+  end
+
+  private
+  def uncompress(data)
     ary = data.split(',')
     raw = []
 
@@ -46,7 +64,7 @@ class ImageExporter
     return raw
   end
 
-  def self.int2color(i)
+  def int2color(i)
     r = (i & 0xFF0000) >> 16
     g = (i & 0xFF00) >> 8
     b = i & 0xFF

@@ -62,6 +62,11 @@ class Image < ActiveRecord::Base
 
   def export_png(w, h, data)
     png_path = "public/data/#{self.md5id}.png"
-    ImageExporter::export(png_path, w, h, data)
+    small_path = "public/data/#{self.md5id}_small.png"
+
+    #ImageExporter::export(png_path, w, h, data)
+    img = ImageExporter.new(w, h, data)
+    img.export(png_path)
+    img.thumbnail(small_path, 100, 100)
   end
 end
