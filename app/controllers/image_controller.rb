@@ -4,6 +4,21 @@ class ImageController < ApplicationController
   def index
   end
 
+  def proxy
+    if @params[:url]
+      require 'open-uri'
+      url = CGI::unescape(@params[:url])
+      open(url) {|f|
+        @response.headers["Content-Type"] = f.content_type
+        render :text => f.read
+      }
+    else
+      render :text => 'no url'
+    end
+  rescue
+    render :text => 'proxy error'
+  end
+
   def show
     @image = Image.find_by_md5id(@params[:md5id])
     

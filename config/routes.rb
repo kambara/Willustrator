@@ -24,6 +24,15 @@ ActionController::Routing::Routes.draw do |map|
               )
 
   #
+  # redirect
+  #
+  map.connect(
+              'proxy',
+              :controller => 'image',
+              :action => 'proxy'
+              )
+
+  #
   # json
   #
   map.connect(
