@@ -155,7 +155,7 @@ Event.observe(window, 'load', function() {
       end
       %>
       <%
-      if @session[:user_name]
+      if session[:user_name]
         %>
         <a href="/image/copy/<%= @image.md5id %>">
           <img src="/images/page_copy.png" />
@@ -251,17 +251,17 @@ end
 <table align="center">
 <tr>
   <td>
-  <textarea cols="50" rows="5" style="font-size:90%; color:#666666" onclick="this.select()" readonly><%=h "<a href=\"http://#{@request.env['HTTP_HOST']}/image/#{@image.md5id}\" target=\"_blank\"><img src=\"http://#{@request.env['HTTP_HOST']}/data/#{@image.md5id}.png\" alt=\"#{@image.title}\"></a>" %></textarea>
+  <textarea cols="50" rows="5" style="font-size:90%; color:#666666" onclick="this.select()" readonly><%=h "<a href=\"http://#{request.env['HTTP_HOST']}/image/#{@image.md5id}\" target=\"_blank\"><img src=\"http://#{request.env['HTTP_HOST']}/data/#{@image.md5id}.png\" alt=\"#{@image.title}\"></a>" %></textarea>
   </td>
 </tr>
 <tr>
   <td>
-  <%= link_to "SVG", "/data/#{@image.md5id}.svg" %> <input type="text" value="http://<%= @request.env['HTTP_HOST'] %>/data/<%= @image.md5id %>.svg" size="40" style="color:#666666" onclick="this.select()" readonly />
+  <%= link_to "SVG", "/data/#{@image.md5id}.svg" %> <input type="text" value="http://<%= request.env['HTTP_HOST'] %>/data/<%= @image.md5id %>.svg" size="40" style="color:#666666" onclick="this.select()" readonly />
   </td>
 </tr>
 <tr>
   <td>
-  <%= link_to "PNG", "/data/#{@image.md5id}.png" %> <input type="text" value="http://<%= @request.env['HTTP_HOST'] %>/data/<%= @image.md5id %>.png" size="40" style="color:#666666" onclick="this.select()" readonly /> 
+  <%= link_to "PNG", "/data/#{@image.md5id}.png" %> <input type="text" value="http://<%= request.env['HTTP_HOST'] %>/data/<%= @image.md5id %>.png" size="40" style="color:#666666" onclick="this.select()" readonly /> 
   </td>
 </tr>
 </table>

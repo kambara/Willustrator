@@ -1,6 +1,5 @@
 require 'rubygems'
-require_gem 'gd2'
-
+require 'gd2'
 
 class ImageExporter
   class ImageExporterException < StandardError

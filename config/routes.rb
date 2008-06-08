@@ -65,14 +65,14 @@ ActionController::Routing::Routes.draw do |map|
   map.connect(
               'image/:action/:md5id',
               :controller => 'image',
-              :requirements => {:md5id => /^([0-9a-f]{32}|\d{1,3})$/}
+              :requirements => {:md5id => /([0-9a-f]{32}|\d{1,3})/}
               )
 
   map.connect(
               'image/:md5id',
               :controller => 'image',
               :action => 'show',
-              :requirements => {:md5id => /^([0-9a-f]{32}|\d{1,3})$/}
+              :requirements => {:md5id => /([0-9a-f]{32}|\d{1,3})/}
               )
 
   map.connect(
@@ -94,6 +94,10 @@ ActionController::Routing::Routes.draw do |map|
               :controller => 'image',
               :action => 'tag'
               )
+  map.connect('tag',
+              :controller => 'tag',
+              :action => 'index'
+             )
 
   #
   # user page

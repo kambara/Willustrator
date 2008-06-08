@@ -1,10 +1,10 @@
 class JsonController < ApplicationController
   def user_old
     images = Image.find(:all,
-                        :conditions => ["user_name = ?", @params[:user_name]],
+                        :conditions => ["user_name = ?", params[:user_name]],
                         :order => 'lastupdate DESC')
     images_ary = []
-    site_url = "http://#{@request.env['HTTP_HOST']}"
+    site_url = "http://#{request.env['HTTP_HOST']}"
     images.each do |image|
       images_ary.push({
                         :title => image.title || '',
@@ -19,10 +19,10 @@ class JsonController < ApplicationController
 
   def user
     images = Image.find(:all,
-                        :conditions => ["user_name = ?", @params[:user_name]],
+                        :conditions => ["user_name = ?", params[:user_name]],
                         :order => 'lastupdate DESC')
     images_ary = []
-    site_url = "http://#{@request.env['HTTP_HOST']}"
+    site_url = "http://#{request.env['HTTP_HOST']}"
     images.each do |image|
       images_ary.push({
                         :title => image.title || '',
@@ -33,8 +33,8 @@ class JsonController < ApplicationController
                       })
     end
     json = images_ary.to_json
-    if (@params['jsonp'])
-      render :text => "#{@params['jsonp']}(#{json});"
+    if (params['jsonp'])
+      render :text => "#{params['jsonp']}(#{json});"
     else
       render :text => json
     end
@@ -42,13 +42,13 @@ class JsonController < ApplicationController
 
   def new_image
     json = ''
-    if (!@session[:user_name])
+    if (!session[:user_name])
       json = {:error => 'need to login'}.to_json
     else
-      site_url = "http://#{@request.env['HTTP_HOST']}"
-      image = Image.new_item @session[:user_name]
+      site_url = "http://#{request.env['HTTP_HOST']}"
+      image = Image.new_item session[:user_name]
       json = {
-        :owner => @session[:user_name],
+        :owner => session[:user_name],
         :link  => "#{site_url}/image/#{image.md5id.to_s}",
         :edit  => "#{site_url}/image/new_item/#{image.md5id.to_s}",
         :png   => "#{site_url}/data/#{image.md5id.to_s}.png",
@@ -56,8 +56,8 @@ class JsonController < ApplicationController
         :svg   => "#{site_url}/data/#{image.md5id.to_s}.svg",
       }.to_json
     end
-    if (@params['jsonp'])
-      render :text => "#{@params['jsonp']}(#{json});"
+    if (params['jsonp'])
+      render :text => "#{params['jsonp']}(#{json});"
     else
       render :text => json
     end

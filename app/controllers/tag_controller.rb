@@ -6,9 +6,9 @@ class TagController < ApplicationController
   end
 
   def add
-    tag_name = @params[:tag][:name]
-    image_id = @params[:tag][:image_id]
-    user_name = @params[:tag][:user_name]
+    tag_name = params[:tag][:name]
+    image_id = params[:tag][:image_id]
+    user_name = params[:tag][:user_name]
     unless Tag.find(:first,
                     :conditions => [
                       "name=? AND user_name=? AND image_id=?",
@@ -17,7 +17,7 @@ class TagController < ApplicationController
                       image_id
                     ]) then
       tag = Tag.new
-      tag.attributes = @params[:tag]
+      tag.attributes = params[:tag]
       tag.name.strip!
       tag.save
     end
@@ -25,11 +25,11 @@ class TagController < ApplicationController
   end
 
   def destroy
-    unless @session[:user_name] # provide crawller
+    unless session[:user_name] # provide crawller
       redirect_to "/"
       return
     end
-    tag = Tag.find @params[:id] rescue nil
+    tag = Tag.find params[:id] rescue nil
     unless tag
       redirect_to "/"
       return

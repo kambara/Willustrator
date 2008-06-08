@@ -16,10 +16,10 @@
 
 <h1>
   <%
-  if @params[:tag]
+  if params[:tag]
     %>
     <a href="/<%= @user_name %>/"><%= @user_name %></a>'s
-    <span class="tag"><%= @params[:tag] %></span>
+    <span class="tag"><%= params[:tag] %></span>
     <%
   else
     %>
@@ -31,14 +31,14 @@
 
 <% if @is_owner %>
   <div style="text-align: center">
-  <%= form_tag :action => "new_item" %>
+  <% form_tag :action => "new_item" do %>
     <input type="submit" value="Create New Image" />
-  <%= end_form_tag %>
+  <% end %>
   </div>
 <% end %>
  
 <div class="image-list">
-  <%= render_collection_of_partials "image_list", @images %>
+  <%= render :partial => "image_list", :collection => @images %>
 </div>
 
 <%= render_partial 'pager', @pages %>

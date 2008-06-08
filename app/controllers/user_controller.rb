@@ -11,8 +11,8 @@ class UserController < ApplicationController
   def login
     if ($willustrator_config[:offline])
       test_user = $willustrator_config[:offline_username]
-      @session[:user_name] = test_user
-      redirect_to_url "/#{test_user}/"
+      session[:user_name] = test_user
+      redirect_to "/#{test_user}/"
       return
     end
     
@@ -21,8 +21,8 @@ class UserController < ApplicationController
     if params.has_key?(:cert)
       begin
         user = hatena_auth.login(params[:cert])
-        @session[:user_name] = user['name']
-        redirect_to_url "/#{user['name']}/"
+        session[:user_name] = user['name']
+        redirect_to "/#{user['name']}/"
       rescue Hatena::API::AuthError => e
         render :text => 'Auth Error'
       end
@@ -32,7 +32,7 @@ class UserController < ApplicationController
   end
 
   def logout
-    @session[:user_name] = nil
+    session[:user_name] = nil
     redirect_to '/'
   end
 end

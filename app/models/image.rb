@@ -1,5 +1,5 @@
 class Image < ActiveRecord::Base
-  has_many :tags, :dependent => true
+  has_many :tags, :dependent => :destroy
 
   validates_length_of(:title,
                       :maximum=>100,

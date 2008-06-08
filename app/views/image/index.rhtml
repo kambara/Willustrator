@@ -6,8 +6,8 @@
   <p>
   
   <div style="font-size:130%; margin:20 auto 10 auto; width:250px; background-color:#EEEEEE; border:1px solid #999999; padding:10; line-height:120%;">
-  <% if @session[:user_name] %>
-    <a href="/<%= @session[:user_name] %>/"><%= @session[:user_name] %>'s Images</a>
+  <% if session[:user_name] %>
+    <a href="/<%= session[:user_name] %>/"><%= session[:user_name] %>'s Images</a>
   <% else %>
     <a href="/login">Login</a><bt />
     <span style="color:#666666; font-size:10pt">with Hatena Account</span>

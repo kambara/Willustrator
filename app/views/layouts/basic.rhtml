@@ -15,9 +15,9 @@
 
   <div class="login-menu">
     <%
-    if @session[:user_name]
+    if session[:user_name]
       %>
-      <a href="/<%= @session[:user_name] %>/"><%= @session[:user_name] %></a>
+      <a href="/<%= session[:user_name] %>/"><%= session[:user_name] %></a>
       | <%= link_to "Logout", "/logout" %>
       <%
     else
