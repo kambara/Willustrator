@@ -1,5 +1,6 @@
 config/database.yml
 db/*.sqlite3
+db/*.db3
 log/*.log
 log/*.pid
 public/data/
